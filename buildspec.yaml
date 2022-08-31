@@ -1,0 +1,17 @@
+stages:
+  - build1
+  - docker-hub
+
+build1:
+  stage: build1
+  script:
+    - echo "Do your build here"
+    - docker rmi $DOCKER_LOG/$DOCKER_REP
+    - docker build -t $DOCKER_LOG/$DOCKER_REP .
+
+docker-hub:
+  stage: docker-hub
+  script:
+    - echo "push to docker-hub repository"
+    - docker login --username=$DOCKER_LOG --password=$DOCKER_PASS  docker.io
+    - docker push $DOCKER_LOG/$DOCKER_REP:latest
